@@ -24,7 +24,25 @@ const Article = mongoose.model("Article", articleSchema);
 
 app.get("/articles", function(req, res) {
   Article.find(function(err, results) {
-    res.send(results);
+    if(!err) {
+      res.send(results);
+    } else {
+      res.send(err);
+    }
+  });
+});
+
+app.post("/articles", function(req, res) {
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content
+  });
+  newArticle.save(function(err) {
+    if(err) {
+      res.send(err);
+    } else {
+      res.send("Successfully added a new article!");
+    }
   });
 });
 
